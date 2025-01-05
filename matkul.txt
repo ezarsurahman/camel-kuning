@@ -1,0 +1,8 @@
+756280-2 BerpikirKompu01
+756827-4 TermoDasar01
+756878-4 MatematikaLanjut01
+757662-4 MekanikaSolid202
+757688-2 Pengukur&Metro01
+757693-1 PrakPengukur&Metr
+748256-4 ProsesManuf&PM-01
+758919-1 PraktikumProsesMan
