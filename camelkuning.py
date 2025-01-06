@@ -29,16 +29,19 @@ def war(stop_event,num):
     common_matkul = ""
     chosen_matkul = ""
 
-    with open("credentials.txt", "r") as file:
-        creds = []
-        for line in file:
-            creds.append(line.strip())
+    creds = [
+        "user.name", #Username
+        "password", #Password
+        "LEBRON JAMES", #SIAK Display name
+        "DDP", #Common Matkul
+        "DDP", #Chosen Matkul
+    ]
 
-        username = creds[0]
-        password = creds[1]
-        display_name = creds[2]
-        common_matkul = creds[3]
-        chosen_matkul = creds[4]
+    username = creds[0]
+    password = creds[1]
+    display_name = creds[2]
+    common_matkul = creds[3]
+    chosen_matkul = creds[4]
     
     print_bot("====INFO AKUN====",num)
     print_bot(f"Username: {username}",num)
@@ -47,11 +50,9 @@ def war(stop_event,num):
     print_bot(f"Common matkul: {common_matkul}",num)
     print_bot(f"Chosen matkul: {chosen_matkul}",num)
 
-    matkul={}
-    with open("matkul.txt", "r") as file:
-        for line in file:
-            (code, name) = line.split()
-            matkul[name] = code
+    matkul={
+        "BerpikirKompu01" : "756280-2" #Nama Matkul (spasi) Kode-SKS
+    }
 
     print_bot("====INFO MATKUL====",num)
     print_bot("Matkul Dipilih:",num)
@@ -173,7 +174,7 @@ def logout(driver,num):
 def main():
     processes = []
     stop_event = multiprocessing.Event()
-    num_instances = 5  # Number of instances you want to run
+    num_instances = int(input("Masukkan jumlah bot: "))  # Number of instances you want to run
 
     try:
         for i in range(num_instances):
@@ -195,6 +196,9 @@ def print_bot(message,bot_num):
     print(f"Bot {bot_num}: {message}")
 
 if __name__ == "__main__":
-    print("Camel Kuning")
+    multiprocessing.freeze_support()
+    print("==================")
+    print("|| Camel Kuning ||")
+    print("==================")
     print("ACAK ACAK SIAKNG")
     main()
