@@ -6,20 +6,22 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import time
 import multiprocessing
+import undetected_chromedriver as uc
 
 auth_page = "https://academic.ui.ac.id/main/Authentication/"
 home_page = "https://academic.ui.ac.id/main/Welcome/Index"
 siak_page = "https://academic.ui.ac.id/main/CoursePlan/CoursePlanEdit"
 user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+user_agent = ""
 def war(stop_event,num):
     while not stop_event.is_set():
-        options = webdriver.ChromeOptions()
+        options = uc.ChromeOptions()
         options.add_argument('--ignore-certificate-errors')
         options.add_argument('--ignore-ssl-errors')
         # options.add_argument('--headless')  # Run Chrome in headless mode
         options.add_argument('--disable-gpu')
         options.add_argument(f'--user-agent={user_agent}')
-        driver = webdriver.Chrome(options=options)
+        driver = uc.Chrome(options=options)
         driver_ua = driver.execute_script("return navigator.userAgent")
         print("User agent:")
         print(driver_ua)
@@ -68,14 +70,14 @@ def war(stop_event,num):
         
         while not stop_event.is_set():
             try:
-                delay()
+                
                 driver.get(siak_page)
-                time.sleep(0.5)
+                
 
                 if ("Anda tidak dapat mengisi IRS" in driver.page_source):
                     print_bot("SIAK-War belum dimulai, mencoba ulang...",num)
                     raise NoSuchElementException
-
+                
                 # Keep this up to date
                 if (
                     "Pesan untuk pembimbing akademis" in driver.page_source
@@ -88,7 +90,9 @@ def war(stop_event,num):
                 raise NoSuchElementException
 
             except NoSuchElementException:
+                
                 logout(driver,num)
+                
                 login(driver, username, password, display_name,num)
 
         while not stop_event.is_set():
@@ -120,7 +124,7 @@ def war(stop_event,num):
                 raise NoSuchElementException
 
             except NoSuchElementException:
-                delay()
+                
                 driver.get(siak_page)
 
         print_bot("SIAK-War selesai....",num)
@@ -132,12 +136,14 @@ def login(driver, username, password, display_name,num):
 
     while True:
         try:
-            delay()
+            
             driver.get(auth_page)
+            
             element = driver.find_element(By.ID, "u")
             element.send_keys(username)
             element = driver.find_element(By.NAME, "p")
             element.send_keys(password)
+            
             element.send_keys(Keys.RETURN)
 
         except Exception as e:
@@ -148,8 +154,9 @@ def login(driver, username, password, display_name,num):
             continue
 
         try:
-            delay()
+            
             driver.get(home_page)
+            
             if ("Logout Counter" in driver.page_source or display_name in driver.page_source):
                 print_bot("Logged in!",num)
                 break
@@ -162,8 +169,9 @@ def logout(driver,num):
 
     while True:
         try:
-            delay()
+            
             driver.get(home_page)
+            
             driver.find_element(By.PARTIAL_LINK_TEXT, 'Logout').click()
         except:
             try:
@@ -174,7 +182,7 @@ def logout(driver,num):
                 continue
 
         try:
-            delay()
+            
             driver.get(auth_page)
             driver.find_element(By.ID, "u")
             print_bot("Logged out!",num)
@@ -206,8 +214,6 @@ def main():
 def print_bot(message,bot_num):
     print(f"Bot {bot_num}: {message}")
 
-def delay():
-    time.sleep(0.8)
 
 if __name__ == "__main__":
     multiprocessing.freeze_support()
