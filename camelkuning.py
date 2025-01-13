@@ -7,6 +7,9 @@ from selenium.common.exceptions import NoSuchElementException
 import time
 import multiprocessing
 import undetected_chromedriver as uc
+import os 
+import certifi
+os.environ["SSL_CERT_FILE"] = certifi.where()
 
 auth_page = "https://academic.ui.ac.id/main/Authentication/"
 home_page = "https://academic.ui.ac.id/main/Welcome/Index"
@@ -72,6 +75,7 @@ def war(stop_event,num):
             try:
                 
                 driver.get(siak_page)
+                time.sleep(0.5)
                 
 
                 if ("Anda tidak dapat mengisi IRS" in driver.page_source):
